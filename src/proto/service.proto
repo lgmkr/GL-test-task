@@ -1,0 +1,15 @@
+syntax ="proto3";
+
+package main;
+
+service GraphDispatcher {
+  rpc addNode(stream AddNodeRequest) returns ( stream GraphResponse)  {}
+} 
+
+message GraphResponse {
+  string nodes = 1;
+}
+
+message AddNodeRequest {
+  string key = 1;
+}
