@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2019",
     "module": "commonjs",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "strictNullChecks": true
   },
   "include": ["./src/**/*"]

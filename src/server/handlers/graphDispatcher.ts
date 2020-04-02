@@ -2,8 +2,10 @@ import * as grpc from "grpc";
 import {
   IGraphDispatcherServer,
   AddNodeRequest,
-  GraphResponse
-} from "../generated";
+  GraphResponse,
+  BroadMessageRequest,
+  BroadMessageResponse
+} from "../../proto/generated";
 import { GraphNode, Graph } from "../graph";
 
 const graph = new Graph();
@@ -13,34 +15,39 @@ graph.addNode(new GraphNode("C"));
 
 console.log(`Presetted Nodes: ${graph.print()}`);
 
+const clientStore: {
+  [key: string]: grpc.ServerDuplexStream<
+    BroadMessageRequest,
+    BroadMessageResponse
+  >;
+} = {};
+
 export class GraphDispatcherHandler implements IGraphDispatcherServer {
+  broadcasting(
+    call: grpc.ServerDuplexStream<BroadMessageRequest, BroadMessageResponse>
+  ) {
+    clientStore[call.getPeer()] = call;
+  }
   addNode(call: grpc.ServerDuplexStream<AddNodeRequest, GraphResponse>) {
     call.on("data", (request: AddNodeRequest) => {
+      const currentClientId = call.getPeer();
+
       const newNode = new GraphNode(request.getKey());
       graph.addNode(newNode);
-
-      console.log("New node added: ", newNode.getKey());
 
       const response = new GraphResponse();
       response.setNodes(graph.print());
       call.write(response);
+
+      for (const [clientId, clientCall] of Object.entries(clientStore)) {
+        if (clientId === currentClientId) {
+          continue;
+        }
+
+        const response = new BroadMessageResponse();
+        response.setMessage(graph.print());
+        clientCall.write(response);
+      }
     });
   }
-
-  // getHellous() {
-  //   call.on("data", (request: HelloRequest) => {
-  //     console.log("call peer: ", call.getPeer());
-
-  //     const reply = new HelloResponse();
-  //     reply.setMessage(`Hello ${request.getName()} from server`);
-
-  //     console.log("req: ", request.toObject());
-
-  //     call.write(reply);
-  //   });
-  //   call.on("end", () => {
-  //     console.log("end");
-  //     call.end();
-  //   });
-  // }
 }

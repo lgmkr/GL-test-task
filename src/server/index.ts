@@ -1,5 +1,5 @@
 import * as grpc from "grpc";
-import { GraphDispatcherService } from "./generated";
+import { GraphDispatcherService } from "../proto/generated";
 import { GraphDispatcherHandler } from "./handlers/graphDispatcher";
 
 const port: string | number = process.env.PORT || 50051;

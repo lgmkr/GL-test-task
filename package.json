@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "proto:generate": "npm run proto:generate:js && npm run proto:generate:ts",
-    "proto:generate:js": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./src/generated --grpc_out=./src/generated --plugin=protoc-gen-grpc=./node_modules/.bin/grpc_tools_node_protoc_plugin -I ./src/proto ./src/proto/*.proto",
-    "proto:generate:ts": "grpc_tools_node_protoc --plugin=protoc-gen-ts=node_modules/.bin/protoc-gen-ts --ts_out=./src/generated -I ./src/proto ./src/proto/*.proto",
-    "server": "ts-node src/server.ts",
-    "client": "ts-node src/client.ts"
+    "proto:generate:js": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./src/proto/generated --grpc_out=./src/proto/generated --plugin=protoc-gen-grpc=./node_modules/.bin/grpc_tools_node_protoc_plugin -I ./src/proto ./src/proto/*.proto",
+    "proto:generate:ts": "grpc_tools_node_protoc --plugin=protoc-gen-ts=node_modules/.bin/protoc-gen-ts --ts_out=./src/proto/generated -I ./src/proto ./src/proto/*.proto",
+    "server": "ts-node src/server/index.ts",
+    "client": "ts-node src/client/index.ts"
   },
   "repository": {
     "type": "git",

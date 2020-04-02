@@ -1,10 +1,19 @@
-syntax ="proto3";
+syntax = "proto3";
 
 package main;
 
 service GraphDispatcher {
-  rpc addNode(stream AddNodeRequest) returns ( stream GraphResponse)  {}
+  rpc broadcasting(stream BroadMessageRequest) returns (stream BroadMessageResponse) {} 
+  rpc addNode(stream AddNodeRequest) returns (stream GraphResponse)  {}
 } 
+
+message BroadMessageRequest {
+  string message = 1;
+}
+
+message BroadMessageResponse {
+  string message = 1;
+}
 
 message GraphResponse {
   string nodes = 1;
