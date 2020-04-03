@@ -4,7 +4,7 @@
 
 Implemented Graph is undirected without weights.
 
-Implemented Graph is represented as adjacency list.
+Implemented Graph represents an adjacency list.
 
 ## Installing
 
