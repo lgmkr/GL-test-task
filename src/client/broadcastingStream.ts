@@ -8,7 +8,7 @@ export const runBroadcasting = client => {
   > = client.broadcasting();
 
   broadcastingStream.on("data", (data: BroadMessageResponse) => {
-    console.log(`Broadcasting: Updated Graph: ${data.getMessage()}`);
+    console.log(`Broadcasting: Updated Graph:\n${data.getMessage()}`);
   });
 
   broadcastingStream.on("end", () => {

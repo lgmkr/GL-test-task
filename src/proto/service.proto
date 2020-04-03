@@ -4,7 +4,8 @@ package main;
 
 service GraphDispatcher {
   rpc broadcasting(stream BroadMessageRequest) returns (stream BroadMessageResponse) {} 
-  rpc addNode(stream AddNodeRequest) returns (stream GraphResponse)  {}
+  rpc addNode(AddNodeRequest) returns (GraphResponse)  {}
+  rpc addEdge(AddEdgeRequest) returns (GraphResponse)  {}
 } 
 
 message BroadMessageRequest {
@@ -16,9 +17,13 @@ message BroadMessageResponse {
 }
 
 message GraphResponse {
-  string nodes = 1;
+  string graph = 1;
 }
 
 message AddNodeRequest {
+  string key = 1;
+}
+
+message AddEdgeRequest {
   string key = 1;
 }

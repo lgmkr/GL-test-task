@@ -49,8 +49,8 @@ export namespace BroadMessageResponse {
 }
 
 export class GraphResponse extends jspb.Message { 
-    getNodes(): string;
-    setNodes(value: string): void;
+    getGraph(): string;
+    setGraph(value: string): void;
 
 
     serializeBinary(): Uint8Array;
@@ -65,7 +65,7 @@ export class GraphResponse extends jspb.Message {
 
 export namespace GraphResponse {
     export type AsObject = {
-        nodes: string,
+        graph: string,
     }
 }
 
@@ -85,6 +85,27 @@ export class AddNodeRequest extends jspb.Message {
 }
 
 export namespace AddNodeRequest {
+    export type AsObject = {
+        key: string,
+    }
+}
+
+export class AddEdgeRequest extends jspb.Message { 
+    getKey(): string;
+    setKey(value: string): void;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): AddEdgeRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: AddEdgeRequest): AddEdgeRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: AddEdgeRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): AddEdgeRequest;
+    static deserializeBinaryFromReader(message: AddEdgeRequest, reader: jspb.BinaryReader): AddEdgeRequest;
+}
+
+export namespace AddEdgeRequest {
     export type AsObject = {
         key: string,
     }

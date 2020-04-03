@@ -1,23 +1,40 @@
 import * as grpc from "grpc";
-import { AddNodeRequest, GraphResponse } from "../proto/generated";
+import {
+  AddNodeRequest,
+  GraphDispatcherClient,
+  AddEdgeRequest
+} from "../proto/generated";
 
-export const runGraphManaging = (client, args) => {
-  const stream: grpc.ClientDuplexStream<
-    AddNodeRequest,
-    GraphResponse
-  > = client.addNode();
+enum ACTIONS {
+  ADD_NODE = "add:node",
+  ADD_EDGE = "add:edge"
+}
 
-  stream.on("data", (data: GraphResponse) => {
-    console.log(`Graph nodes: ${JSON.stringify(data.getNodes())}`);
-  });
+export const runGraphManaging = (
+  client: GraphDispatcherClient,
+  args: string[]
+) => {
+  const [action, param] = args;
 
-  stream.on("end", () => {
-    console.log("Bye");
-  });
+  if (!action) {
+    throw new Error("No action provided!");
+  }
 
-  for (const key of args) {
-    const req = new AddNodeRequest();
-    req.setKey(key);
-    stream.write(req);
+  if (action === ACTIONS.ADD_NODE) {
+    const addNodeRequest = new AddNodeRequest();
+    addNodeRequest.setKey(param);
+
+    client.addNode(addNodeRequest, function(err, response) {
+      console.log(`Server Response:\n${response.getGraph()}`);
+    });
+  }
+
+  if (action === ACTIONS.ADD_EDGE) {
+    const addEdgeRequest = new AddEdgeRequest();
+    addEdgeRequest.setKey(param);
+
+    client.addEdge(addEdgeRequest, function(err, response) {
+      console.log(`Server Response:\n${response.getGraph()}`);
+    });
   }
 };
