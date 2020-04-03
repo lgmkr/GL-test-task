@@ -34,17 +34,17 @@ npm run client <action> <param1>
 
 Actions:
 
-- add:node - Adds node to the graph
+- **add:node** - Adds node to the graph
 
 Example: `npm run add:node A`
 
-- remove:node - Remove node from thee graph (not implemented yet)
+- **remove:node** - Remove node from thee graph _(note: not implemented yet)_
 
-- add:edge - Adds edge to the graph
+- **add:edge** - Adds edge to the graph
 
 Example: `npm run add:node A:B`
 
-- remove:edge - Remove edge from thee graph (not implemented yet)
+- **remove:edge** - Remove edge from thee graph _(note: not implemented yet)_
 
 ## Working scenario
 
