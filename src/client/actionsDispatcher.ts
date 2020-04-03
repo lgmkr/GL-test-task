@@ -3,16 +3,18 @@ import {
   AddNodeRequest,
   GraphDispatcherClient,
   AddEdgeRequest,
-  RemoveEdgeRequest
+  RemoveEdgeRequest,
+  RemoveNodeRequest
 } from "../proto/generated";
 
 enum ACTIONS {
   ADD_NODE = "add:node",
   ADD_EDGE = "add:edge",
-  REMOVE_EDGE = "remove:edge"
+  REMOVE_EDGE = "remove:edge",
+  REMOVE_NODE = "remove:node"
 }
 
-export const runGraphManaging = (
+export const runActionsDispatcher = (
   client: GraphDispatcherClient,
   args: string[]
 ) => {
@@ -26,7 +28,15 @@ export const runGraphManaging = (
     const addNodeRequest = new AddNodeRequest();
     addNodeRequest.setKey(param);
 
-    client.addNode(addNodeRequest, (err, response) => {
+    client.addNode(addNodeRequest, (_, response) => {
+      console.log(`Server Response:\n${response.getGraph()}`);
+    });
+  }
+
+  if (action === ACTIONS.REMOVE_NODE) {
+    const request = new RemoveNodeRequest();
+    request.setKey(param);
+    client.removeNode(request, (_, response) => {
       console.log(`Server Response:\n${response.getGraph()}`);
     });
   }
@@ -37,7 +47,7 @@ export const runGraphManaging = (
     addEdgeRequest.setStartnode(startNodeKey);
     addEdgeRequest.setEndnode(endNodeKey);
 
-    client.addEdge(addEdgeRequest, (err, response) => {
+    client.addEdge(addEdgeRequest, (_, response) => {
       console.log(`Server Response:\n${response.getGraph()}`);
     });
   }
@@ -49,7 +59,7 @@ export const runGraphManaging = (
     removeEdgeRequest.setStartnode(startNodeKey);
     removeEdgeRequest.setEndnode(endNodeKey);
 
-    client.removeEdge(removeEdgeRequest, (err, response) => {
+    client.removeEdge(removeEdgeRequest, (_, response) => {
       console.log(`Server Response:\n${response.getGraph()}`);
     });
   }

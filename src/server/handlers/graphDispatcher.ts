@@ -6,6 +6,7 @@ import {
   BroadMessageRequest,
   BroadMessageResponse,
   RemoveEdgeRequest,
+  RemoveNodeRequest,
   AddEdgeRequest
 } from "../../proto/generated";
 import { GraphNode, Graph, GraphEdge } from "../graph";
@@ -24,17 +25,24 @@ const clientStore: {
   >;
 } = {};
 
-const broadcast = currentClientId => {
+const broadcast = (currentClientId: string) => {
+  const graphView = graph.print();
+  console.log(`Graph Updated:\n${graphView}`);
   for (const [clientId, clientCall] of Object.entries(clientStore)) {
     if (clientId === currentClientId) {
       continue;
     }
 
     const response = new BroadMessageResponse();
-    response.setMessage(graph.print());
+    response.setMessage(graphView);
     clientCall.write(response);
   }
 };
+
+type UnaryCallCallback = (
+  error: grpc.ServiceError | null,
+  response: GraphResponse
+) => void;
 
 export class GraphDispatcherHandler implements IGraphDispatcherServer {
   broadcasting(
@@ -49,7 +57,10 @@ export class GraphDispatcherHandler implements IGraphDispatcherServer {
       console.log(`Client ${currentClientId} disconnected!`);
     });
   }
-  addNode(call: grpc.ServerUnaryCall<AddNodeRequest>, callback) {
+  addNode(
+    call: grpc.ServerUnaryCall<AddNodeRequest>,
+    callback: UnaryCallCallback
+  ) {
     const currentClientId = call.getPeer();
     const newNode = new GraphNode(call.request.getKey());
     graph.addNode(newNode);
@@ -60,8 +71,25 @@ export class GraphDispatcherHandler implements IGraphDispatcherServer {
 
     broadcast(currentClientId);
   }
+  removeNode(
+    call: grpc.ServerUnaryCall<RemoveNodeRequest>,
+    callback: UnaryCallCallback
+  ) {
+    const currentClientId = call.getPeer();
 
-  addEdge(call: grpc.ServerUnaryCall<AddEdgeRequest>, callback) {
+    const nodeKey = call.request.getKey();
+    graph.removeNode(nodeKey);
+
+    const response = new GraphResponse();
+    response.setGraph(graph.print());
+    callback(null, response);
+
+    broadcast(currentClientId);
+  }
+  addEdge(
+    call: grpc.ServerUnaryCall<AddEdgeRequest>,
+    callback: UnaryCallCallback
+  ) {
     const currentClientId = call.getPeer();
 
     const newEdge = new GraphEdge(
@@ -77,7 +105,10 @@ export class GraphDispatcherHandler implements IGraphDispatcherServer {
     broadcast(currentClientId);
   }
 
-  removeEdge(call: grpc.ServerUnaryCall<RemoveEdgeRequest>, callback) {
+  removeEdge(
+    call: grpc.ServerUnaryCall<RemoveEdgeRequest>,
+    callback: UnaryCallCallback
+  ) {
     const currentClientId = call.getPeer();
 
     const startNodeKey = call.request.getStartnode();

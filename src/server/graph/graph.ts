@@ -15,6 +15,29 @@ export class Graph {
     return this;
   }
 
+  removeNode(nodeKey: string): Graph {
+    if (!this.nodes[nodeKey]) {
+      throw new Error(`Node ${nodeKey} doesn't exist`);
+    }
+    delete this.nodes[nodeKey];
+
+    const neighbors = this.getNeighbors(nodeKey);
+    if (!neighbors) {
+      throw new Error(`Node ${nodeKey} doesn't exist`);
+    }
+
+    for (let neighborNode of neighbors) {
+      const nodeInList = this.adjList.get(neighborNode);
+      this.adjList.set(
+        neighborNode,
+        nodeInList!.filter(node => node !== nodeKey)
+      );
+    }
+    this.adjList.delete(nodeKey);
+
+    return this;
+  }
+
   getNodeByKey(key: string) {
     return this.nodes[key];
   }
@@ -49,22 +72,26 @@ export class Graph {
     return this;
   }
 
+  getNeighbors(nodeKey: string) {
+    return this.adjList.get(nodeKey);
+  }
+
   removeEdge(startNodeKey: string, endNodeKey: string) {
     if (!this.nodes[startNodeKey]) {
-      throw new Error(`Node ${startNodeKey} node doesn't exist`);
+      throw new Error(`Node ${startNodeKey} doesn't exist`);
     }
 
     if (!this.nodes[endNodeKey]) {
-      throw new Error(`Node ${endNodeKey} node doesn't exist`);
+      throw new Error(`Node ${endNodeKey} doesn't exist`);
     }
 
-    const startNodeList = this.adjList.get(startNodeKey);
+    const startNodeList = this.getNeighbors(startNodeKey);
     this.adjList.set(
       startNodeKey,
       startNodeList!.filter(node => node !== endNodeKey)
     );
 
-    const endNodeList = this.adjList.get(endNodeKey);
+    const endNodeList = this.getNeighbors(endNodeKey);
     this.adjList.set(
       endNodeKey,
       endNodeList!.filter(node => node !== startNodeKey)

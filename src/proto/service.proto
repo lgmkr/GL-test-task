@@ -5,14 +5,10 @@ package main;
 service GraphDispatcher {
   rpc broadcasting(stream BroadMessageRequest) returns (stream BroadMessageResponse) {} 
   rpc addNode(AddNodeRequest) returns (GraphResponse)  {}
+  rpc removeNode(RemoveNodeRequest) returns (GraphResponse)  {}
   rpc addEdge(AddEdgeRequest) returns (GraphResponse)  {}
   rpc removeEdge(RemoveEdgeRequest) returns (GraphResponse) {}
-} 
-message RemoveEdgeRequest {
-  string startNode = 1;
-  string endNode = 2;
 }
-
 message BroadMessageRequest {
   string message = 1;
 }
@@ -25,11 +21,21 @@ message GraphResponse {
   string graph = 1;
 }
 
-message AddNodeRequest {
-  string key = 1;  
-}
-
 message AddEdgeRequest {
   string startNode = 1;
   string endNode = 2;
 }
+
+message RemoveEdgeRequest {
+  string startNode = 1;
+  string endNode = 2;
+}
+
+message AddNodeRequest {
+  string key = 1;  
+}
+
+message RemoveNodeRequest {
+  string key = 1;
+}
+

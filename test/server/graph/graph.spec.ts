@@ -24,38 +24,67 @@ describe("Graph", () => {
     expect(graph.getNodeByKey(nodeC.getKey())).toEqual(nodeC);
   });
 
-  it("should add edges to graph", () => {
-    const nodeA = new GraphNode("A");
-    const nodeB = new GraphNode("B");
+  describe("removeNode", () => {
+    let graph: Graph;
+    beforeEach(() => {
+      graph = new Graph();
+    });
 
-    const edgeAB = new GraphEdge(nodeA, nodeB);
+    it("should throw error when node doesn't exist", () => {
+      expect(() => graph.removeNode("A")).toThrowError("Node A doesn't exist");
+    });
 
-    graph.addEdge(edgeAB);
-
-    expect(graph.getAllNodes().length).toBe(2);
-    expect(graph.getAllNodes()[0]).toEqual(nodeA);
-    expect(graph.getAllNodes()[1]).toEqual(nodeB);
+    it("should be possible to delete nodes and linked edges", () => {});
   });
 
-  it("should throw an error when trying to add edge twice", () => {
-    const vertexA = new GraphNode("A");
-    const vertexB = new GraphNode("B");
+  describe("addEdge", () => {
+    let nodeA: GraphNode;
+    let nodeB: GraphNode;
+    let edgeAB: GraphEdge;
 
-    const edgeAB = new GraphEdge(vertexA, vertexB);
+    beforeEach(() => {
+      nodeA = new GraphNode("A");
+      nodeB = new GraphNode("B");
+      edgeAB = new GraphEdge(nodeA, nodeB);
+    });
 
-    expect(() => graph.addEdge(edgeAB).addEdge(edgeAB)).toThrowError(
-      "Edge already exists"
-    );
+    it("should add edges to graph", () => {
+      graph.addEdge(edgeAB);
+
+      let nodeANeighbors = graph.getNeighbors(nodeA.getKey());
+      expect(nodeANeighbors).toContain("B");
+
+      let nodeBNeighbors = graph.getNeighbors(nodeB.getKey());
+      expect(nodeBNeighbors).toContain("A");
+    });
+
+    it("should throw an error when trying to add edge twice", () => {
+      expect(() => graph.addEdge(edgeAB).addEdge(edgeAB)).toThrowError(
+        "Edge already exists"
+      );
+    });
   });
 
-  it.skip("should be possible to delete edges", () => {
-    const nodeA = new GraphNode("A");
-    const nodeB = new GraphNode("B");
+  describe("removeEdge", () => {
+    let nodeA: GraphNode;
+    let nodeB: GraphNode;
 
-    const edgeAB = new GraphEdge(nodeA, nodeB);
+    beforeEach(() => {
+      nodeA = new GraphNode("A");
+      nodeB = new GraphNode("B");
+      const edgeAB = new GraphEdge(nodeA, nodeB);
 
-    graph.addEdge(edgeAB);
-    graph.removeEdge(nodeA.getKey(), nodeB.getKey());
+      graph.addEdge(edgeAB);
+
+      graph.removeEdge(nodeA.getKey(), nodeB.getKey());
+    });
+
+    it("should delete connected nodes", () => {
+      let nodeANeighbors = graph.getNeighbors(nodeA.getKey());
+      expect(nodeANeighbors).not.toContain("B");
+
+      let nodeBNeighbors = graph.getNeighbors(nodeB.getKey());
+      expect(nodeBNeighbors).not.toContain("A");
+    });
   });
-  it.todo("should be possible to delete nodes");
 });
