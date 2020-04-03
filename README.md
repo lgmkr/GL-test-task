@@ -42,9 +42,11 @@ Example: `npm run add:node A`
 
 - **add:edge** - Adds edge to the graph
 
-Example: `npm run add:node A:B`
+Example: `npm run add:node A_B`
 
-- **remove:edge** - Remove edge from thee graph _(note: not implemented yet)_
+- **remove:edge** - Remove edge from thee graph
+
+Example: `npm run remove:node A_B`
 
 ## Working scenario
 
