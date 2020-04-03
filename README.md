@@ -2,8 +2,9 @@
 
 ## Prerequisites
 
-Implemented Graph is undirected without weights
-Implemented Graph is represented as adjacency list
+Implemented Graph is undirected without weights.
+
+Implemented Graph is represented as adjacency list.
 
 ## Installing
 
