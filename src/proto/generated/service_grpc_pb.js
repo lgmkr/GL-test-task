@@ -59,6 +59,17 @@ function deserialize_main_GraphResponse(buffer_arg) {
   return service_pb.GraphResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_main_RemoveEdgeRequest(arg) {
+  if (!(arg instanceof service_pb.RemoveEdgeRequest)) {
+    throw new Error('Expected argument of type main.RemoveEdgeRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_main_RemoveEdgeRequest(buffer_arg) {
+  return service_pb.RemoveEdgeRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 
 var GraphDispatcherService = exports.GraphDispatcherService = {
   broadcasting: {
@@ -91,6 +102,17 @@ var GraphDispatcherService = exports.GraphDispatcherService = {
     responseType: service_pb.GraphResponse,
     requestSerialize: serialize_main_AddEdgeRequest,
     requestDeserialize: deserialize_main_AddEdgeRequest,
+    responseSerialize: serialize_main_GraphResponse,
+    responseDeserialize: deserialize_main_GraphResponse,
+  },
+  removeEdge: {
+    path: '/main.GraphDispatcher/removeEdge',
+    requestStream: false,
+    responseStream: false,
+    requestType: service_pb.RemoveEdgeRequest,
+    responseType: service_pb.GraphResponse,
+    requestSerialize: serialize_main_RemoveEdgeRequest,
+    requestDeserialize: deserialize_main_RemoveEdgeRequest,
     responseSerialize: serialize_main_GraphResponse,
     responseDeserialize: deserialize_main_GraphResponse,
   },

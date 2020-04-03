@@ -49,6 +49,28 @@ export class Graph {
     return this;
   }
 
+  removeEdge(startNodeKey: string, endNodeKey: string) {
+    if (!this.nodes[startNodeKey]) {
+      throw new Error(`Node ${startNodeKey} node doesn't exist`);
+    }
+
+    if (!this.nodes[endNodeKey]) {
+      throw new Error(`Node ${endNodeKey} node doesn't exist`);
+    }
+
+    const startNodeList = this.adjList.get(startNodeKey);
+    this.adjList.set(
+      startNodeKey,
+      startNodeList!.filter(node => node !== endNodeKey)
+    );
+
+    const endNodeList = this.adjList.get(endNodeKey);
+    this.adjList.set(
+      endNodeKey,
+      endNodeList!.filter(node => node !== startNodeKey)
+    );
+  }
+
   printNodes() {
     return Object.keys(this.nodes).toString();
   }

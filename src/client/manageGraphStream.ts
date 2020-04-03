@@ -2,12 +2,14 @@ import * as grpc from "grpc";
 import {
   AddNodeRequest,
   GraphDispatcherClient,
-  AddEdgeRequest
+  AddEdgeRequest,
+  RemoveEdgeRequest
 } from "../proto/generated";
 
 enum ACTIONS {
   ADD_NODE = "add:node",
-  ADD_EDGE = "add:edge"
+  ADD_EDGE = "add:edge",
+  REMOVE_EDGE = "remove:edge"
 }
 
 export const runGraphManaging = (
@@ -24,16 +26,30 @@ export const runGraphManaging = (
     const addNodeRequest = new AddNodeRequest();
     addNodeRequest.setKey(param);
 
-    client.addNode(addNodeRequest, function(err, response) {
+    client.addNode(addNodeRequest, (err, response) => {
       console.log(`Server Response:\n${response.getGraph()}`);
     });
   }
 
   if (action === ACTIONS.ADD_EDGE) {
     const addEdgeRequest = new AddEdgeRequest();
-    addEdgeRequest.setKey(param);
+    const [startNodeKey, endNodeKey] = param.split("_");
+    addEdgeRequest.setStartnode(startNodeKey);
+    addEdgeRequest.setEndnode(endNodeKey);
 
-    client.addEdge(addEdgeRequest, function(err, response) {
+    client.addEdge(addEdgeRequest, (err, response) => {
+      console.log(`Server Response:\n${response.getGraph()}`);
+    });
+  }
+
+  if (action === ACTIONS.REMOVE_EDGE) {
+    const [startNodeKey, endNodeKey] = param.split("_");
+
+    const removeEdgeRequest = new RemoveEdgeRequest();
+    removeEdgeRequest.setStartnode(startNodeKey);
+    removeEdgeRequest.setEndnode(endNodeKey);
+
+    client.removeEdge(removeEdgeRequest, (err, response) => {
       console.log(`Server Response:\n${response.getGraph()}`);
     });
   }

@@ -6,6 +6,31 @@
 
 import * as jspb from "google-protobuf";
 
+export class RemoveEdgeRequest extends jspb.Message { 
+    getStartnode(): string;
+    setStartnode(value: string): void;
+
+    getEndnode(): string;
+    setEndnode(value: string): void;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): RemoveEdgeRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: RemoveEdgeRequest): RemoveEdgeRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: RemoveEdgeRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): RemoveEdgeRequest;
+    static deserializeBinaryFromReader(message: RemoveEdgeRequest, reader: jspb.BinaryReader): RemoveEdgeRequest;
+}
+
+export namespace RemoveEdgeRequest {
+    export type AsObject = {
+        startnode: string,
+        endnode: string,
+    }
+}
+
 export class BroadMessageRequest extends jspb.Message { 
     getMessage(): string;
     setMessage(value: string): void;
@@ -91,8 +116,11 @@ export namespace AddNodeRequest {
 }
 
 export class AddEdgeRequest extends jspb.Message { 
-    getKey(): string;
-    setKey(value: string): void;
+    getStartnode(): string;
+    setStartnode(value: string): void;
+
+    getEndnode(): string;
+    setEndnode(value: string): void;
 
 
     serializeBinary(): Uint8Array;
@@ -107,6 +135,7 @@ export class AddEdgeRequest extends jspb.Message {
 
 export namespace AddEdgeRequest {
     export type AsObject = {
-        key: string,
+        startnode: string,
+        endnode: string,
     }
 }

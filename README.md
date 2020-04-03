@@ -106,3 +106,5 @@ npm run test:watch
 ## Roadmap
 
 - Every client should provide prompt to actions and params (cli)
+- Remove disconnected clients from stored clients list
+- Get rid of callbacks in GraphDispatcherHandler (client: grpc-promise package)

@@ -6,7 +6,12 @@ service GraphDispatcher {
   rpc broadcasting(stream BroadMessageRequest) returns (stream BroadMessageResponse) {} 
   rpc addNode(AddNodeRequest) returns (GraphResponse)  {}
   rpc addEdge(AddEdgeRequest) returns (GraphResponse)  {}
+  rpc removeEdge(RemoveEdgeRequest) returns (GraphResponse) {}
 } 
+message RemoveEdgeRequest {
+  string startNode = 1;
+  string endNode = 2;
+}
 
 message BroadMessageRequest {
   string message = 1;
@@ -21,9 +26,10 @@ message GraphResponse {
 }
 
 message AddNodeRequest {
-  string key = 1;
+  string key = 1;  
 }
 
 message AddEdgeRequest {
-  string key = 1;
+  string startNode = 1;
+  string endNode = 2;
 }

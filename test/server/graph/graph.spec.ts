@@ -48,6 +48,14 @@ describe("Graph", () => {
     );
   });
 
-  it.todo("should be possible to delete edges");
+  it.skip("should be possible to delete edges", () => {
+    const nodeA = new GraphNode("A");
+    const nodeB = new GraphNode("B");
+
+    const edgeAB = new GraphEdge(nodeA, nodeB);
+
+    graph.addEdge(edgeAB);
+    graph.removeEdge(nodeA.getKey(), nodeB.getKey());
+  });
   it.todo("should be possible to delete nodes");
 });
