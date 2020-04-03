@@ -93,4 +93,12 @@ H ->
 
 ## Testing
 
-Note: Not implemented yet
+```bash
+npm test
+```
+
+or in watch mode
+
+```
+npm run test:watch
+```
