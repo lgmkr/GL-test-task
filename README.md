@@ -102,3 +102,7 @@ or in watch mode
 ```
 npm run test:watch
 ```
+
+## Roadmap
+
+- Every client should provide prompt to actions and params (cli)

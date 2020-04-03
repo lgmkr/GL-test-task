@@ -19,6 +19,10 @@ export class Graph {
     return this.nodes[key];
   }
 
+  getAllNodes() {
+    return Object.values(this.nodes);
+  }
+
   addEdge(edge: GraphEdge): Graph {
     let startNode = this.getNodeByKey(edge.startNode.getKey());
     let endNode = this.getNodeByKey(edge.endNode.getKey());
@@ -43,6 +47,10 @@ export class Graph {
     this.adjList.get(endNode.getKey())!.push(startNode.getKey());
 
     return this;
+  }
+
+  printNodes() {
+    return Object.keys(this.nodes).toString();
   }
 
   print() {
