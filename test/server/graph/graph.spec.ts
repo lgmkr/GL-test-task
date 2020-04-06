@@ -12,10 +12,7 @@ describe("Graph", () => {
     const nodeB = new GraphNode("B");
     const nodeC = new GraphNode("C");
 
-    graph
-      .addNode(nodeA)
-      .addNode(nodeB)
-      .addNode(nodeC);
+    graph.addNode(nodeA).addNode(nodeB).addNode(nodeC);
 
     expect(graph.printNodes()).toBe("A,B,C");
 
@@ -34,7 +31,30 @@ describe("Graph", () => {
       expect(() => graph.removeNode("A")).toThrowError("Node A doesn't exist");
     });
 
-    it("should be possible to delete nodes and linked edges", () => {});
+    it("should be possible to delete nodes and linked edges", () => {
+      const nodeA = new GraphNode("A");
+      const nodeB = new GraphNode("B");
+      const nodeC = new GraphNode("C");
+
+      graph.addNode(nodeA).addNode(nodeB).addNode(nodeC);
+      graph
+        .addEdge(new GraphEdge(nodeA, nodeB))
+        .addEdge(new GraphEdge(nodeA, nodeC));
+
+      let nodeBNeighbors = graph.getNeighbors(nodeB.getKey());
+      expect(nodeBNeighbors).toEqual(["A"]);
+      let nodeCNeighbors = graph.getNeighbors(nodeC.getKey());
+      expect(nodeCNeighbors).toEqual(["A"]);
+
+      graph.removeNode(nodeA.getKey());
+
+      expect(graph.getNodeByKey(nodeA.getKey())).toBeUndefined();
+
+      nodeBNeighbors = graph.getNeighbors(nodeB.getKey());
+      expect(nodeBNeighbors).toEqual([]);
+      nodeCNeighbors = graph.getNeighbors(nodeC.getKey());
+      expect(nodeCNeighbors).toEqual([]);
+    });
   });
 
   describe("addEdge", () => {
