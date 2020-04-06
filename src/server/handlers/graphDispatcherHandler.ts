@@ -7,7 +7,7 @@ import {
   BroadMessageResponse,
   RemoveEdgeRequest,
   RemoveNodeRequest,
-  AddEdgeRequest
+  AddEdgeRequest,
 } from "../../proto/generated";
 import { GraphNode, Graph, GraphEdge } from "../graph";
 
@@ -16,7 +16,7 @@ graph.addNode(new GraphNode("A"));
 graph.addNode(new GraphNode("B"));
 graph.addNode(new GraphNode("C"));
 
-console.log(`Presetted Nodes:\n${graph.print()}`);
+console.log(`Graph Default Nodes:\n${graph.print()}`);
 
 const clientStore: {
   [key: string]: grpc.ServerDuplexStream<

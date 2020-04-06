@@ -10,7 +10,7 @@
     "server": "ts-node src/server/index.ts",
     "client": "ts-node src/client/index.ts",
     "test": "jest --verbose",
-    "test:watch": "jest --watch --verbose"
+    "test:watch": "jest --watch --runInBand --detectOpenHandles --verbose"
   },
   "repository": {
     "type": "git",
