@@ -28,6 +28,7 @@ const clientStore: {
 const broadcast = (currentClientId: string) => {
   const graphView = graph.print();
   console.log(`Graph Updated:\n${graphView}`);
+
   for (const [clientId, clientCall] of Object.entries(clientStore)) {
     if (clientId === currentClientId) {
       continue;
@@ -62,12 +63,23 @@ export class GraphDispatcherHandler implements IGraphDispatcherServer {
     callback: UnaryCallCallback
   ) {
     const currentClientId = call.getPeer();
-    const newNode = new GraphNode(call.request.getKey());
-    graph.addNode(newNode);
-
     const response = new GraphResponse();
-    response.setGraph(graph.print());
-    callback(null, response);
+
+    const newNode = new GraphNode(call.request.getKey());
+    try {
+      graph.addNode(newNode);
+      response.setGraph(graph.print());
+      callback(null, response);
+    } catch (error) {
+      callback(
+        {
+          code: grpc.status.INVALID_ARGUMENT,
+          message: error.message,
+          name: "Client error",
+        },
+        response
+      );
+    }
 
     broadcast(currentClientId);
   }
@@ -76,13 +88,23 @@ export class GraphDispatcherHandler implements IGraphDispatcherServer {
     callback: UnaryCallCallback
   ) {
     const currentClientId = call.getPeer();
+    const response = new GraphResponse();
 
     const nodeKey = call.request.getKey();
-    graph.removeNode(nodeKey);
-
-    const response = new GraphResponse();
-    response.setGraph(graph.print());
-    callback(null, response);
+    try {
+      graph.removeNode(nodeKey);
+      response.setGraph(graph.print());
+      callback(null, response);
+    } catch (error) {
+      callback(
+        {
+          code: grpc.status.NOT_FOUND,
+          message: error.message,
+          name: "Client error",
+        },
+        response
+      );
+    }
 
     broadcast(currentClientId);
   }
@@ -91,16 +113,26 @@ export class GraphDispatcherHandler implements IGraphDispatcherServer {
     callback: UnaryCallCallback
   ) {
     const currentClientId = call.getPeer();
-
     const newEdge = new GraphEdge(
       new GraphNode(call.request.getStartnode()),
       new GraphNode(call.request.getEndnode())
     );
-    graph.addEdge(newEdge);
-
     const response = new GraphResponse();
-    response.setGraph(graph.print());
-    callback(null, response);
+
+    try {
+      graph.addEdge(newEdge);
+      response.setGraph(graph.print());
+      callback(null, response);
+    } catch (error) {
+      callback(
+        {
+          code: grpc.status.INVALID_ARGUMENT,
+          message: error.message,
+          name: "Client error",
+        },
+        response
+      );
+    }
 
     broadcast(currentClientId);
   }

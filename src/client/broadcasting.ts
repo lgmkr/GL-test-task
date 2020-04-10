@@ -23,4 +23,6 @@ export const runBroadcasting = (client: GraphDispatcherClient) => {
   broadMessageRequest.setMessage("Broadcasting: Hello Server");
 
   broadcastingStream.write(broadMessageRequest);
+
+  return broadcastingStream;
 };

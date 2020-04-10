@@ -9,6 +9,7 @@ service GraphDispatcher {
   rpc addEdge(AddEdgeRequest) returns (GraphResponse)  {}
   rpc removeEdge(RemoveEdgeRequest) returns (GraphResponse) {}
 }
+
 message BroadMessageRequest {
   string message = 1;
 }

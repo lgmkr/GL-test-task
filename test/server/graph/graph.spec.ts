@@ -2,23 +2,34 @@ import { Graph } from "../../../src/server/graph/graph";
 import { GraphNode, GraphEdge } from "../../../src/server/graph";
 
 describe("Graph", () => {
-  let graph: Graph;
-  beforeEach(() => {
-    graph = new Graph();
-  });
+  describe("addNode", () => {
+    let graph: Graph;
+    let nodeA: GraphNode;
+    let nodeB: GraphNode;
+    let nodeC: GraphNode;
 
-  it("should add nodes to graph", () => {
-    const nodeA = new GraphNode("A");
-    const nodeB = new GraphNode("B");
-    const nodeC = new GraphNode("C");
+    beforeEach(() => {
+      graph = new Graph();
+      nodeA = new GraphNode("A");
+      nodeB = new GraphNode("B");
+      nodeC = new GraphNode("C");
+    });
 
-    graph.addNode(nodeA).addNode(nodeB).addNode(nodeC);
+    it("should throw an error for duplicate Node", () => {
+      expect(() => {
+        graph.addNode(nodeA).addNode(nodeA);
+      }).toThrowError("Node A already exists");
+    });
 
-    expect(graph.printNodes()).toBe("A,B,C");
+    it("should add nodes to graph", () => {
+      graph.addNode(nodeA).addNode(nodeB).addNode(nodeC);
 
-    expect(graph.getNodeByKey(nodeA.getKey())).toEqual(nodeA);
-    expect(graph.getNodeByKey(nodeB.getKey())).toEqual(nodeB);
-    expect(graph.getNodeByKey(nodeC.getKey())).toEqual(nodeC);
+      expect(graph.printNodes()).toBe("A,B,C");
+
+      expect(graph.getNodeByKey(nodeA.getKey())).toEqual(nodeA);
+      expect(graph.getNodeByKey(nodeB.getKey())).toEqual(nodeB);
+      expect(graph.getNodeByKey(nodeC.getKey())).toEqual(nodeC);
+    });
   });
 
   describe("removeNode", () => {
@@ -61,8 +72,9 @@ describe("Graph", () => {
     let nodeA: GraphNode;
     let nodeB: GraphNode;
     let edgeAB: GraphEdge;
-
+    let graph: Graph;
     beforeEach(() => {
+      graph = new Graph();
       nodeA = new GraphNode("A");
       nodeB = new GraphNode("B");
       edgeAB = new GraphEdge(nodeA, nodeB);
@@ -88,8 +100,11 @@ describe("Graph", () => {
   describe("removeEdge", () => {
     let nodeA: GraphNode;
     let nodeB: GraphNode;
+    let graph: Graph;
 
     beforeEach(() => {
+      graph = new Graph();
+
       nodeA = new GraphNode("A");
       nodeB = new GraphNode("B");
       const edgeAB = new GraphEdge(nodeA, nodeB);
@@ -97,6 +112,12 @@ describe("Graph", () => {
       graph.addEdge(edgeAB);
 
       graph.removeEdge(nodeA.getKey(), nodeB.getKey());
+    });
+
+    it("should throw an error in edge doesn't exist", () => {
+      expect(() => {
+        graph.removeEdge(nodeA.getKey(), nodeB.getKey());
+      }).toThrowError("Graph has no A_B edge");
     });
 
     it("should delete connected nodes", () => {
