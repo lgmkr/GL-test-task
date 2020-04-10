@@ -1,6 +1,6 @@
 import * as grpc from "grpc";
 import { GraphDispatcherService } from "../proto/generated";
-import { GraphDispatcherHandler } from "./handlers/graphDispatcherHandler";
+import { GraphHandler } from "./handlers";
 
 export const stopServer = (server: grpc.Server): Promise<void> =>
   new Promise((resolve, _) => {
@@ -12,7 +12,7 @@ export const stopServer = (server: grpc.Server): Promise<void> =>
 
 export const startServer = async (port = 50051): Promise<grpc.Server> => {
   const server: grpc.Server = new grpc.Server();
-  server.addService(GraphDispatcherService, new GraphDispatcherHandler());
+  server.addService(GraphDispatcherService, new GraphHandler());
 
   try {
     await new Promise((resolve, reject) => {

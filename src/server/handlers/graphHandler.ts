@@ -10,42 +10,16 @@ import {
   AddEdgeRequest,
 } from "../../proto/generated";
 import { GraphNode, Graph, GraphEdge } from "../graph";
+import { clientStore, broadcast } from "./broadcastHandler";
 
 const graph = new Graph();
-graph.addNode(new GraphNode("A"));
-graph.addNode(new GraphNode("B"));
-graph.addNode(new GraphNode("C"));
-
-console.log(`Graph Default Nodes:\n${graph.print()}`);
-
-const clientStore: {
-  [key: string]: grpc.ServerDuplexStream<
-    BroadMessageRequest,
-    BroadMessageResponse
-  >;
-} = {};
-
-const broadcast = (currentClientId: string) => {
-  const graphView = graph.print();
-  console.log(`Graph Updated:\n${graphView}`);
-
-  for (const [clientId, clientCall] of Object.entries(clientStore)) {
-    if (clientId === currentClientId) {
-      continue;
-    }
-
-    const response = new BroadMessageResponse();
-    response.setMessage(graphView);
-    clientCall.write(response);
-  }
-};
 
 type UnaryCallCallback = (
   error: grpc.ServiceError | null,
   response: GraphResponse
 ) => void;
 
-export class GraphDispatcherHandler implements IGraphDispatcherServer {
+export class GraphHandler implements IGraphDispatcherServer {
   broadcasting(
     call: grpc.ServerDuplexStream<BroadMessageRequest, BroadMessageResponse>
   ) {
@@ -81,7 +55,7 @@ export class GraphDispatcherHandler implements IGraphDispatcherServer {
       );
     }
 
-    broadcast(currentClientId);
+    broadcast(graph.print(), currentClientId);
   }
   removeNode(
     call: grpc.ServerUnaryCall<RemoveNodeRequest>,
@@ -106,7 +80,7 @@ export class GraphDispatcherHandler implements IGraphDispatcherServer {
       );
     }
 
-    broadcast(currentClientId);
+    broadcast(graph.print(), currentClientId);
   }
   addEdge(
     call: grpc.ServerUnaryCall<AddEdgeRequest>,
@@ -134,7 +108,7 @@ export class GraphDispatcherHandler implements IGraphDispatcherServer {
       );
     }
 
-    broadcast(currentClientId);
+    broadcast(graph.print(), currentClientId);
   }
 
   removeEdge(
@@ -151,6 +125,6 @@ export class GraphDispatcherHandler implements IGraphDispatcherServer {
     response.setGraph(graph.print());
     callback(null, response);
 
-    broadcast(currentClientId);
+    broadcast(graph.print(), currentClientId);
   }
 }
