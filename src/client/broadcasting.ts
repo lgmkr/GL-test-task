@@ -1,7 +1,11 @@
 import * as grpc from "grpc";
-import { BroadMessageRequest, BroadMessageResponse } from "../proto/generated";
+import {
+  BroadMessageRequest,
+  BroadMessageResponse,
+  GraphDispatcherClient,
+} from "../proto/generated";
 
-export const runBroadcasting = client => {
+export const runBroadcasting = (client: GraphDispatcherClient) => {
   const broadcastingStream: grpc.ClientDuplexStream<
     BroadMessageRequest,
     BroadMessageResponse

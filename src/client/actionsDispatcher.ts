@@ -4,14 +4,14 @@ import {
   GraphDispatcherClient,
   AddEdgeRequest,
   RemoveEdgeRequest,
-  RemoveNodeRequest
+  RemoveNodeRequest,
 } from "../proto/generated";
 
-enum ACTIONS {
+export enum ACTIONS {
   ADD_NODE = "add:node",
   ADD_EDGE = "add:edge",
   REMOVE_EDGE = "remove:edge",
-  REMOVE_NODE = "remove:node"
+  REMOVE_NODE = "remove:node",
 }
 
 export const runActionsDispatcher = (
