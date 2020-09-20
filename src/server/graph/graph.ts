@@ -4,6 +4,7 @@ import { GraphEdge } from "./graphEdge";
 export class Graph {
   private nodes: { [key: string]: GraphNode } = {};
   private edges: { [key: string]: GraphEdge } = {};
+
   private adjList: Map<string, string[]> = new Map();
 
   constructor() {}
@@ -30,6 +31,9 @@ export class Graph {
     }
     delete this.nodes[nodeKey];
 
+    // {
+    // "A": ["B", "C"]
+    // }
     const neighbors = this.getNeighbors(nodeKey);
     if (!neighbors) {
       throw new Error(`Node ${nodeKey} doesn't exist`);

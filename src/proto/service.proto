@@ -4,14 +4,24 @@ package main;
 
 service GraphDispatcher {
   rpc broadcasting(stream BroadMessageRequest) returns (stream BroadMessageResponse) {} 
-  rpc addNode(AddNodeRequest) returns (GraphResponse)  {}
+  rpc addNode(AddNodeRequest) returns (AddNodeResponse)  {}
   rpc removeNode(RemoveNodeRequest) returns (GraphResponse)  {}
   rpc addEdge(AddEdgeRequest) returns (GraphResponse)  {}
   rpc removeEdge(RemoveEdgeRequest) returns (GraphResponse) {}
 }
 
+message Edge {
+  repeated string endNode = 1; 
+}
+
+message AddNodeResponse {
+  bool success = 1;
+  repeated string nodes = 2;
+  map<string, Edge> edges= 3; 
+}
+
 message BroadMessageRequest {
-  string message = 1;
+  // string message = 1;
 }
 
 message BroadMessageResponse {

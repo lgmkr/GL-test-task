@@ -31,7 +31,7 @@ export class GraphHandler implements IGraphDispatcherServer {
       delete clientStore[currentClientId];
       console.log(`Client ${currentClientId} disconnected!`);
     });
-  }
+  },
   addNode(
     call: grpc.ServerUnaryCall<AddNodeRequest>,
     callback: UnaryCallCallback
@@ -121,10 +121,22 @@ export class GraphHandler implements IGraphDispatcherServer {
     const endNodeKey = call.request.getEndnode();
     graph.removeEdge(startNodeKey, endNodeKey);
 
+
     const response = new GraphResponse();
+    try{ 
     response.setGraph(graph.print());
     callback(null, response);
-
+  } catch(error) {
+    callback(
+      {
+        code: grpc.status.INVALID_ARGUMENT,
+        message: error.message,
+        name: "Client error",
+      },
+      response
+    );
+ 
+  }
     broadcast(graph.print(), currentClientId);
   }
 }

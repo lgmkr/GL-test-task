@@ -24,14 +24,14 @@ interface IGraphDispatcherService_Ibroadcasting extends grpc.MethodDefinition<se
     responseSerialize: grpc.serialize<service_pb.BroadMessageResponse>;
     responseDeserialize: grpc.deserialize<service_pb.BroadMessageResponse>;
 }
-interface IGraphDispatcherService_IaddNode extends grpc.MethodDefinition<service_pb.AddNodeRequest, service_pb.GraphResponse> {
+interface IGraphDispatcherService_IaddNode extends grpc.MethodDefinition<service_pb.AddNodeRequest, service_pb.AddNodeResponse> {
     path: string; // "/main.GraphDispatcher/addNode"
     requestStream: boolean; // false
     responseStream: boolean; // false
     requestSerialize: grpc.serialize<service_pb.AddNodeRequest>;
     requestDeserialize: grpc.deserialize<service_pb.AddNodeRequest>;
-    responseSerialize: grpc.serialize<service_pb.GraphResponse>;
-    responseDeserialize: grpc.deserialize<service_pb.GraphResponse>;
+    responseSerialize: grpc.serialize<service_pb.AddNodeResponse>;
+    responseDeserialize: grpc.deserialize<service_pb.AddNodeResponse>;
 }
 interface IGraphDispatcherService_IremoveNode extends grpc.MethodDefinition<service_pb.RemoveNodeRequest, service_pb.GraphResponse> {
     path: string; // "/main.GraphDispatcher/removeNode"
@@ -65,7 +65,7 @@ export const GraphDispatcherService: IGraphDispatcherService;
 
 export interface IGraphDispatcherServer {
     broadcasting: grpc.handleBidiStreamingCall<service_pb.BroadMessageRequest, service_pb.BroadMessageResponse>;
-    addNode: grpc.handleUnaryCall<service_pb.AddNodeRequest, service_pb.GraphResponse>;
+    addNode: grpc.handleUnaryCall<service_pb.AddNodeRequest, service_pb.AddNodeResponse>;
     removeNode: grpc.handleUnaryCall<service_pb.RemoveNodeRequest, service_pb.GraphResponse>;
     addEdge: grpc.handleUnaryCall<service_pb.AddEdgeRequest, service_pb.GraphResponse>;
     removeEdge: grpc.handleUnaryCall<service_pb.RemoveEdgeRequest, service_pb.GraphResponse>;
@@ -75,9 +75,9 @@ export interface IGraphDispatcherClient {
     broadcasting(): grpc.ClientDuplexStream<service_pb.BroadMessageRequest, service_pb.BroadMessageResponse>;
     broadcasting(options: Partial<grpc.CallOptions>): grpc.ClientDuplexStream<service_pb.BroadMessageRequest, service_pb.BroadMessageResponse>;
     broadcasting(metadata: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientDuplexStream<service_pb.BroadMessageRequest, service_pb.BroadMessageResponse>;
-    addNode(request: service_pb.AddNodeRequest, callback: (error: grpc.ServiceError | null, response: service_pb.GraphResponse) => void): grpc.ClientUnaryCall;
-    addNode(request: service_pb.AddNodeRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: service_pb.GraphResponse) => void): grpc.ClientUnaryCall;
-    addNode(request: service_pb.AddNodeRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: service_pb.GraphResponse) => void): grpc.ClientUnaryCall;
+    addNode(request: service_pb.AddNodeRequest, callback: (error: grpc.ServiceError | null, response: service_pb.AddNodeResponse) => void): grpc.ClientUnaryCall;
+    addNode(request: service_pb.AddNodeRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: service_pb.AddNodeResponse) => void): grpc.ClientUnaryCall;
+    addNode(request: service_pb.AddNodeRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: service_pb.AddNodeResponse) => void): grpc.ClientUnaryCall;
     removeNode(request: service_pb.RemoveNodeRequest, callback: (error: grpc.ServiceError | null, response: service_pb.GraphResponse) => void): grpc.ClientUnaryCall;
     removeNode(request: service_pb.RemoveNodeRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: service_pb.GraphResponse) => void): grpc.ClientUnaryCall;
     removeNode(request: service_pb.RemoveNodeRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: service_pb.GraphResponse) => void): grpc.ClientUnaryCall;
@@ -93,9 +93,9 @@ export class GraphDispatcherClient extends grpc.Client implements IGraphDispatch
     constructor(address: string, credentials: grpc.ChannelCredentials, options?: object);
     public broadcasting(options?: Partial<grpc.CallOptions>): grpc.ClientDuplexStream<service_pb.BroadMessageRequest, service_pb.BroadMessageResponse>;
     public broadcasting(metadata?: grpc.Metadata, options?: Partial<grpc.CallOptions>): grpc.ClientDuplexStream<service_pb.BroadMessageRequest, service_pb.BroadMessageResponse>;
-    public addNode(request: service_pb.AddNodeRequest, callback: (error: grpc.ServiceError | null, response: service_pb.GraphResponse) => void): grpc.ClientUnaryCall;
-    public addNode(request: service_pb.AddNodeRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: service_pb.GraphResponse) => void): grpc.ClientUnaryCall;
-    public addNode(request: service_pb.AddNodeRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: service_pb.GraphResponse) => void): grpc.ClientUnaryCall;
+    public addNode(request: service_pb.AddNodeRequest, callback: (error: grpc.ServiceError | null, response: service_pb.AddNodeResponse) => void): grpc.ClientUnaryCall;
+    public addNode(request: service_pb.AddNodeRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: service_pb.AddNodeResponse) => void): grpc.ClientUnaryCall;
+    public addNode(request: service_pb.AddNodeRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: service_pb.AddNodeResponse) => void): grpc.ClientUnaryCall;
     public removeNode(request: service_pb.RemoveNodeRequest, callback: (error: grpc.ServiceError | null, response: service_pb.GraphResponse) => void): grpc.ClientUnaryCall;
     public removeNode(request: service_pb.RemoveNodeRequest, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: service_pb.GraphResponse) => void): grpc.ClientUnaryCall;
     public removeNode(request: service_pb.RemoveNodeRequest, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: service_pb.GraphResponse) => void): grpc.ClientUnaryCall;

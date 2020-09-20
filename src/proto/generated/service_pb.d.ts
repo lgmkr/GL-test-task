@@ -6,6 +6,33 @@
 
 import * as jspb from "google-protobuf";
 
+export class AddNodeResponse extends jspb.Message { 
+    getSuccess(): boolean;
+    setSuccess(value: boolean): void;
+
+    clearNodesList(): void;
+    getNodesList(): Array<string>;
+    setNodesList(value: Array<string>): void;
+    addNodes(value: string, index?: number): string;
+
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): AddNodeResponse.AsObject;
+    static toObject(includeInstance: boolean, msg: AddNodeResponse): AddNodeResponse.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: AddNodeResponse, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): AddNodeResponse;
+    static deserializeBinaryFromReader(message: AddNodeResponse, reader: jspb.BinaryReader): AddNodeResponse;
+}
+
+export namespace AddNodeResponse {
+    export type AsObject = {
+        success: boolean,
+        nodesList: Array<string>,
+    }
+}
+
 export class BroadMessageRequest extends jspb.Message { 
     getMessage(): string;
     setMessage(value: string): void;

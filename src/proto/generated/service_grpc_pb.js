@@ -26,6 +26,17 @@ function deserialize_main_AddNodeRequest(buffer_arg) {
   return service_pb.AddNodeRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_main_AddNodeResponse(arg) {
+  if (!(arg instanceof service_pb.AddNodeResponse)) {
+    throw new Error('Expected argument of type main.AddNodeResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_main_AddNodeResponse(buffer_arg) {
+  return service_pb.AddNodeResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_main_BroadMessageRequest(arg) {
   if (!(arg instanceof service_pb.BroadMessageRequest)) {
     throw new Error('Expected argument of type main.BroadMessageRequest');
@@ -99,11 +110,11 @@ var GraphDispatcherService = exports.GraphDispatcherService = {
     requestStream: false,
     responseStream: false,
     requestType: service_pb.AddNodeRequest,
-    responseType: service_pb.GraphResponse,
+    responseType: service_pb.AddNodeResponse,
     requestSerialize: serialize_main_AddNodeRequest,
     requestDeserialize: deserialize_main_AddNodeRequest,
-    responseSerialize: serialize_main_GraphResponse,
-    responseDeserialize: deserialize_main_GraphResponse,
+    responseSerialize: serialize_main_AddNodeResponse,
+    responseDeserialize: deserialize_main_AddNodeResponse,
   },
   removeNode: {
     path: '/main.GraphDispatcher/removeNode',
